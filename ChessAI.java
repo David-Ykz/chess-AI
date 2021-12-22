@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 class ChessAI {
@@ -25,10 +27,13 @@ class ChessAI {
         return bestMove.getEvaluation();
     }
 
-    public void findBest(Board board, MoveResult move, int depth) {
-        if (depth == 0) { return; }
+    public void findBest(Board board, MoveResult move) {
+        if (move.getChildren().isEmpty()) { return; }
 
-        findBest(board, move, depth - 1);
+        for (MoveResult eachMove : move.getChildren()) {
+            findBest(board, eachMove);
+        }
+
         if (move.getTurn() > 0) {
             move.setEvaluation(findMax(move.getChildren()));
         } else if (move.getTurn() < 0) {
@@ -56,6 +61,23 @@ class ChessAI {
             }
         }
     }
+
+    public void traverseTree(Queue<MoveResult> levelQueue) {
+        Queue<MoveResult> childQueue = new LinkedList<>();
+        while (!levelQueue.isEmpty()) {
+            MoveResult node = levelQueue.remove();
+            System.out.print(node.getEvaluation() + " ");
+
+            if (!node.getChildren().isEmpty()) {
+                childQueue.addAll(node.getChildren());
+            }
+        }
+        System.out.println("");
+        if (childQueue.isEmpty()) { return; }
+        traverseTree(childQueue);
+    }
+
+
 }
 
 

@@ -1,10 +1,35 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 class Chess {
     static ArrayList<Integer> selectedSquares = new ArrayList<Integer>();
     static Board currentBoard;
     static Pieces selectedPiece;
     static ChessAI chessAI = new ChessAI();
+
+
+
+    public static ArrayList<Pieces> setupCustomBoard() {
+        ArrayList<Pieces> startingPieces = new ArrayList<Pieces>();
+        Pawn pawn;
+        Knight knight;
+        Bishop bishop;
+        Rook rook;
+        Queen queen;
+        King king;
+
+        king = new King(58, "king", 1, "White King.png", false);
+        startingPieces.add(king);
+        king = new King(51, "king", -1, "Black King.png", false);
+        startingPieces.add(king);
+
+        knight = new Knight(66, "knight", -1, "Black Knight.png");
+        startingPieces.add(knight);
+
+        return startingPieces;
+
+    }
 
     public static ArrayList<Pieces> fillStartingPieces() {
         ArrayList<Pieces> startingPieces = new ArrayList<Pieces>();
@@ -77,24 +102,30 @@ class Chess {
 
 
     public static void makeAIMove() {
-        int depth = 3;
+        int depth = 2;
         double start = System.nanoTime();
         System.out.println("changed turn right before");
         MoveResult root = new MoveResult(null, null, -1, -1, currentBoard.getTurn(), currentBoard.evaluateBoard());
         chessAI.generateDepthSearch(currentBoard, root, depth);
         double end = System.nanoTime();
         System.out.println("Execution time: " + (end - start) / 1000000000);
-        currentBoard.setVariableEvaluation(currentBoard.evaluateBoard());
-        chessAI.findBest(currentBoard, root, depth);
+        Queue<MoveResult> levelQueue = new LinkedList<>();
+        levelQueue.add(root);
+        chessAI.traverseTree(levelQueue);
+        chessAI.findBest(currentBoard, root);
+        System.out.println();
+        chessAI.traverseTree(levelQueue);
         ArrayList<MoveResult> bestMoves = new ArrayList<>();
+        System.out.println(root.getEvaluation());
         for (MoveResult eachMove : root.getChildren()) {
+            System.out.print("Move: " + eachMove.getPiece().getName() + " " +eachMove.getNewPosition() + " Score: " + eachMove.getEvaluation() + " ");
             if (eachMove.getEvaluation() == root.getEvaluation()) {
                 bestMoves.add(eachMove);
             }
         }
         MoveResult eachMove = bestMoves.get((int)(Math.random() * bestMoves.size()));
         currentBoard.movePiece(eachMove.getPiece(), eachMove.getNewPosition());
-//        currentBoard.changeTurn();
+      //  currentBoard.changeTurn();
         // TURNS ARE RANDOMLY CHANGING SOMEWHERE PLZ FIX
 
     }
@@ -193,7 +224,8 @@ class Chess {
 
     public static void main(String[] args) throws Exception {
         ArrayList<Pieces> startingPieces = new ArrayList<Pieces>();
-        startingPieces.addAll(fillStartingPieces());
+//        startingPieces.addAll(fillStartingPieces());
+        startingPieces.addAll(setupCustomBoard());
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);
 

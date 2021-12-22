@@ -67,23 +67,29 @@ public class MinMax {
     }
 
     public static void findBest(Node node, int maxmin, int depth) {
-        if (depth == 0) {
+        if (node.next.isEmpty()) {
             return;
         }
-        findBest(node, -maxmin, depth - 1);
+        for (Node eachNode : node.next) {
+            findBest(eachNode, -maxmin, depth - 1);
+        }
         if (maxmin > 0) {
             node.value = findMax(node.next);
         } else if (maxmin < 0) {
             node.value = findMin(node.next);
         }
+        Queue<Node> levelQueue = new LinkedList<>();
+        levelQueue.add(node);
+        traverseTree(levelQueue);
+
     }
 
 
 
 
     public static void main(String[]args) {
-        Node root = new Node(0, null, 3);
-        createTree(3, root);
+        Node root = new Node(0, null, 2);
+        createTree(2, root);
         Queue<Node> levelQueue = new LinkedList<>();
         levelQueue.add(root);
         traverseTree(levelQueue);

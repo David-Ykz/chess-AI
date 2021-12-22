@@ -12,6 +12,7 @@ class Pawn extends Pieces {
     }
 
     public void promotePawn(Board board) {
+        System.out.println("promoting pawn");
         //Scanner input = new Scanner(System.in);
         //String pieceName = input.next();
         int saveIndex = -1;
