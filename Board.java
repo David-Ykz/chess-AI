@@ -1,171 +1,116 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.util.Locale;
 
 class Board {
-    private Board previousBoard;
-    private Board nextBoard;
-    private ArrayList<Board> nextBoards = new ArrayList<>();
     private int turn;
-    private ArrayList<Pieces> pieces = new ArrayList<Pieces>();
-    private double variableEvaluation;
+    private HashMap<Integer, Piece> pieces;
+    private HashMap<String, String> pieceNames = new HashMap<>();
 
-
-    Board(int turn, ArrayList<Pieces> pieces) {
+    Board(int turn, HashMap<Integer, Piece> pieces) {
         this.turn = turn;
         this.pieces = pieces;
-    }
-
-
-    // Getters and Setters
-    public void addNextBoard(Board board) {
-        this.nextBoards.add(board);
-    }
-
-    public ArrayList<Board> getNextBoards() {
-        return this.nextBoards;
-    }
-
-    public Board getNext() {
-        return this.nextBoard;
-    }
-    public void setNext(Board next) {
-        this.nextBoard = next;
-    }
-    public Board getPrev() { return this.previousBoard; }
-
-    public void setPrev(Board prev) {
-        this.previousBoard = prev;
+        pieceNames.put("king", "k");
+        pieceNames.put("queen", "q");
+        pieceNames.put("rook", "r");
+        pieceNames.put("knight", "n");
+        pieceNames.put("bishop", "b");
+        pieceNames.put("pawn", "p");
     }
 
     public int getTurn() {
         return this.turn;
     }
-
-    public double getVariableEvaluation() {
-        return this.variableEvaluation;
-    }
-
-    public void setVariableEvaluation(double newEvaluation) {
-      this.variableEvaluation = newEvaluation;
-    }
-
     public void changeTurn() {
-        if (turn == -1) {
-            turn = 1;
-        } else {
-            turn = -1;
-        }
+        this.turn = turn * -1;
     }
-
-    public ArrayList<Pieces> getPieces() {
-        return this.pieces;
+    public ArrayList<Piece> getPieces() {
+        return new ArrayList<Piece>(this.pieces.values());
     }
-
-
-    public void overridePiece(int index, Pieces piece) {
-        this.pieces.set(index, piece);
+    public void overridePiece(int position, Piece piece) {
+        this.pieces.put(position, piece);
     }
-
-
-    public Pieces getPiece(int index) {
-        return this.pieces.get(index);
+    public Piece getPiece(int position) {
+        return this.pieces.get(position);
     }
-
-    public Pieces getPieceByPos(int position) {
-        for (int i = 0; i < pieces.size(); i++) {
-            if (pieces.get(i).getPosition() == position) {
-                return pieces.get(i);
-            }
-        }
-        return null;
-    }
-
-    public Pieces movePiece(Pieces piece, int position) {
-        for (int i = 0; i < this.pieces.size(); i++) {
-            if (pieces.get(i).getPosition() == position && pieces.get(i).getColor() != piece.getColor()) {
-                piece.setPosition(position);
-                return pieces.remove(i);
-            }
-        }
-        piece.setPosition(position);
-        return null;
-    }
-
-    public void revertMove(Pieces piece, Pieces capturedPiece, int oldPosition) {
-        piece.setPosition(oldPosition);
-        if (capturedPiece != null) {
-            pieces.add(capturedPiece);
-        }
-    }
-
     public boolean emptySquare(int square) {
-        for (int i = 0; i < pieces.size(); i++) {
-            if (pieces.get(i).getPosition() == square) {
-                return false;
-            }
-        }
-        return true;
+        return !this.pieces.containsKey(square);
     }
-
     public boolean friendlySquare(int square, int color) {
-        for (int i = 0; i < pieces.size(); i++) {
-            if (pieces.get(i).getPosition() == square && pieces.get(i).getColor() == color) {
-                return true;
-            }
-        }
-        return false;
+        return (!emptySquare(square) && getPiece(square).getColor() == color);
     }
-
     public boolean hostileSquare(int square, int color) {
-        for (int i = 0; i < pieces.size(); i++) {
-            if (pieces.get(i).getPosition() == square && pieces.get(i).getColor() != color) {
-                return true;
-            }
-        }
-        return false;
+        return (!emptySquare(square) && getPiece(square).getColor() != color);
     }
-
-    public void findAllLegalMoves() {
-        for (int i = 0; i < pieces.size(); i++) {
-            if (pieces.get(i).getColor() == turn) {
-                pieces.get(i).findLegalMoves(this);
-            }
+    public void changePiecePos(Piece piece, int newPosition) {
+        Piece movedPiece = this.pieces.remove(piece.getPosition());
+        movedPiece.setPosition(newPosition);
+        this.pieces.put(newPosition, movedPiece);
+    }
+    public Piece movePiece(Piece piece, int position) {
+        Piece removedPiece = null;
+        if (pieces.containsKey(position) && getPiece(position).getColor() != piece.getColor()) {
+             removedPiece = pieces.remove(position);
+        }
+        changePiecePos(piece, position);
+        return removedPiece;
+    }
+    public void revertMove(Piece piece, Piece capturedPiece, int oldPosition) {
+        changePiecePos(piece, oldPosition);
+        if (capturedPiece != null) {
+            pieces.put(capturedPiece.getPosition(), capturedPiece);
         }
     }
-
     public boolean isCheckmate() {
         int numOfLegalMoves = 0;
-        for (int i = 0; i < pieces.size(); i++) {
-            if (pieces.get(i).getColor() == turn) {
-                numOfLegalMoves += pieces.get(i).findLegalMoves(this).size();
+        for (Piece piece : getPieces()) {
+            if (piece.getColor() == turn) {
+                numOfLegalMoves += piece.findLegalMoves(this).size();
             }
         }
-        if (numOfLegalMoves == 0) {
-            return true;
+        return numOfLegalMoves == 0;
+    }
+    public String toFEN() {
+        String[][] chessboard = new String[8][8];
+        for (Piece piece : getPieces()) {
+            String pieceCharacter = pieceNames.get(piece.getName());
+            if (piece.getColor() == 1) {
+                pieceCharacter = pieceCharacter.toUpperCase();
+            }
+            chessboard[piece.getPosition() % 10 - 1][piece.getPosition() / 10 - 1] = pieceCharacter;
+        }
+
+        String fen = "";
+
+        for (int i = 0; i < chessboard.length; i++) {
+            String[] row = chessboard[i];
+            int counter = 0;
+            for (int j = 0; j < row.length; j++) {
+                if (row[j] == null) {
+                    counter++;
+                } else if (counter == 0) {
+                    fen += row[j];
+                } else {
+                    fen += counter + row[j];
+                    counter = 0;
+                }
+            }
+            if (counter != 0) {
+                fen += counter;
+            }
+            fen += "/";
+        }
+        if (this.turn > 0) {
+            fen += "w";
         } else {
-            return false;
+            fen += "b";
         }
+        return fen;
     }
 
 
-    public void printBoard() {
-        for (int y = 1; y < 9; y++) {
-            for (int x = 1; x < 9; x++) {
-                boolean foundPiece = false;
-                for (int i = 0; i < pieces.size(); i++) {
-                    if (pieces.get(i).getPosition() == x * 10 + y) {
-                        System.out.print(pieces.get(i).getName().substring(0,1));
-                        foundPiece = true;
-                    }
-                }
-                if (foundPiece == false) {
-                    System.out.print("#");
-                }
-            }
-            System.out.println("");
-        }
-    }
 
 
 
@@ -181,7 +126,6 @@ class Board {
         g.setColor(whiteGrey);
         g.fillRect(GRIDSIZE * 8, evaluationDisplay + GRIDSIZE * 4, 20, GRIDSIZE * 4 - evaluationDisplay);
     }
-
     public void drawBoard(Graphics g, int GRIDSIZE) {
         Color lightSquare = new Color(241, 217, 182);
         Color darkSquare = new Color(181, 137, 99);
@@ -205,23 +149,17 @@ class Board {
                 g.fillRect(x * GRIDSIZE, y * GRIDSIZE, GRIDSIZE, GRIDSIZE);
             }
         }
-
-        for (int i = 0; i < pieces.size(); i++) {
-            pieces.get(i).drawPiece(g, GRIDSIZE);
+        for (Piece piece : this.pieces.values()) {
+            piece.drawPiece(g, GRIDSIZE);
         }
-
     }
 
     // Important methods
     public double evaluateBoard() {
         double evaluation = 0;
-
-        for (int i = 0; i < pieces.size(); i++) {
-            evaluation += pieces.get(i).findValue(this) * pieces.get(i).getColor();
+        for (Piece piece : this.pieces.values()) {
+            evaluation += piece.findValue(this) * piece.getColor();
         }
         return evaluation;
     }
-
-
-
 }

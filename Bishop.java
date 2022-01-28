@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Bishop extends Pieces {
+class Bishop extends Piece {
   private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
   Bishop(int position, String pieceName, int color, String spriteName) {
     super(position, pieceName, color, spriteName);

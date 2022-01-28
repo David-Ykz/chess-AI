@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Rook extends Pieces {
+class Rook extends Piece {
   private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
   private ArrayList<Integer> verticalSquares = new ArrayList<Integer>();
   private boolean hasMoved;

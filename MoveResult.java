@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class MoveResult {
-    private Pieces piece;
-    private Pieces capturedPiece;
+    private Piece piece;
+    private Piece capturedPiece;
     private int oldPosition;
     private int newPosition;
     private int turn;
@@ -10,7 +10,7 @@ public class MoveResult {
     private double evaluation;
 
 
-    public MoveResult(Pieces piece, Pieces capturedPiece, int oldPosition, int newPosition, int turn, double evaluation) {
+    public MoveResult(Piece piece, Piece capturedPiece, int oldPosition, int newPosition, int turn, double evaluation) {
         this.piece = piece;
         this.capturedPiece = capturedPiece;
         this.oldPosition = oldPosition;
@@ -19,10 +19,10 @@ public class MoveResult {
         this.evaluation = evaluation;
     }
 
-    public Pieces getPiece() {
+    public Piece getPiece() {
         return piece;
     }
-    public Pieces getCapturedPiece() {
+    public Piece getCapturedPiece() {
         return capturedPiece;
     }
     public int getOldPosition() {

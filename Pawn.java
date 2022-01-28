@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Pawn extends Pieces {
+class Pawn extends Piece {
     private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
 
     Pawn(int position, String pieceName, int color, String spriteName) {
@@ -83,7 +83,7 @@ class Pawn extends Pieces {
 
         for (int i = 0; i < possibleMoves.size(); i++) {
             if (board.hostileSquare(possibleMoves.get(i), getColor())) {
-                Pieces capturedPiece = board.movePiece(this, possibleMoves.get(i));
+                Piece capturedPiece = board.movePiece(this, possibleMoves.get(i));
                 if (!findAllMoves(board, getColor()).contains(kingPos)) {
                     legalMoves.add(getPosition());
                 }
@@ -96,7 +96,7 @@ class Pawn extends Pieces {
 
         for (int i = 0; i < possibleMoves.size(); i++) {
             if (board.friendlySquare(possibleMoves.get(i), getColor()) == false) {
-                Pieces capturedPiece = board.movePiece(this, possibleMoves.get(i));
+                Piece capturedPiece = board.movePiece(this, possibleMoves.get(i));
                 if (findAllMoves(board, getColor()).contains(kingPos) == false) {
                     //promotePawn(board);
                     legalMoves.add(getPosition());

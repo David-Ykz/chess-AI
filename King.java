@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class King extends Pieces {
+class King extends Piece {
     private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
     private int[] kingSquares = {-11, -1, 9, -10, 10, -9, 1, 11};
     private boolean hasMoved;
@@ -98,7 +98,7 @@ class King extends Pieces {
 
         for (int i = 0; i < possibleMoves.size(); i++) {
             if (!board.friendlySquare(possibleMoves.get(i), getColor())) {
-                Pieces capturedPiece = board.movePiece(this, possibleMoves.get(i));
+                Piece capturedPiece = board.movePiece(this, possibleMoves.get(i));
                 if (!findAllMoves(board, getColor()).contains(getPosition())) {
                     legalMoves.add(getPosition());
                 }

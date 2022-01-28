@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-class Knight extends Pieces {
+class Knight extends Piece {
   private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
   private int[] knightSquares = { -8, 12, 21, 19, 8, -12, -21, -19};
   Knight(int position, String pieceName, int color, String spriteName) {

@@ -45,12 +45,11 @@ class ChessAI {
         Chess.checkPromotion(board);
         int color = board.getTurn();
         if (depth == 0) { return; }
-        for (int i = 0; i < board.getPieces().size(); i++) {
-            Pieces piece = board.getPieces().get(i);
+        for (Piece piece : board.getPieces()) {
             if (piece.getColor() == color) {
                 for (int eachMove : piece.findLegalMoves(board)) {
                     int oldPosition = piece.getPosition();
-                    Pieces capturedPiece = board.movePiece(piece, eachMove);
+                    Piece capturedPiece = board.movePiece(piece, eachMove);
                     MoveResult moveResult = new MoveResult(piece, capturedPiece, oldPosition, piece.getPosition(), -color, board.evaluateBoard());
                     prevMove.addChild(moveResult);
                     board.changeTurn();
@@ -88,12 +87,12 @@ class ChessAI {
 //        int color = board.getTurn();
 //        if (depth == 0) { return; }
 //        for (int i = 0; i < board.getPieces().size(); i++) {
-//            Pieces piece = board.getPieces().get(i);
+//            Piece piece = board.getPieces().get(i);
 //            if (piece.getColor() == color) {
 //                for (int eachMove = 0; eachMove < piece.findLegalMoves(board).size(); eachMove++) {
 //                    double start, end;
 //                    start = System.nanoTime();
-//                    ArrayList<Pieces> newPieces = Pieces.copyPieces(board.getPieces());
+//                    ArrayList<Piece> newPiece = Pieces.copyPieces(board.getPieces());
 //                    Board newBoard = new Board(-color, newPieces);
 //                    newBoard.setPrev(board);
 //                    board.addNextBoard(newBoard);

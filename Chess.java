@@ -1,38 +1,35 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
 class Chess {
     static ArrayList<Integer> selectedSquares = new ArrayList<Integer>();
     static Board currentBoard;
-    static Pieces selectedPiece;
+    static Piece selectedPiece;
     static ChessAI chessAI = new ChessAI();
 
 
 
-    public static ArrayList<Pieces> setupCustomBoard() {
-        ArrayList<Pieces> startingPieces = new ArrayList<Pieces>();
+    public static HashMap<Integer, Piece> setupCustomBoard() {
+        HashMap<Integer, Piece> startingPieces = new HashMap<>();
         Pawn pawn;
         Knight knight;
         Bishop bishop;
         Rook rook;
         Queen queen;
         King king;
-
         king = new King(58, "king", 1, "White King.png", false);
-        startingPieces.add(king);
+        startingPieces.put(king.getPosition(), king);
         king = new King(51, "king", -1, "Black King.png", false);
-        startingPieces.add(king);
-
+        startingPieces.put(king.getPosition(), king);
         knight = new Knight(66, "knight", -1, "Black Knight.png");
-        startingPieces.add(knight);
-
+        startingPieces.put(knight.getPosition(), knight);
         return startingPieces;
-
     }
 
-    public static ArrayList<Pieces> fillStartingPieces() {
-        ArrayList<Pieces> startingPieces = new ArrayList<Pieces>();
+    public static HashMap<Integer, Piece> fillStartingPieces() {
+        HashMap<Integer, Piece> startingPieces = new HashMap<>();
         Pawn pawn;
         Knight knight;
         Bishop bishop;
@@ -41,43 +38,43 @@ class Chess {
         King king;
         for (int i = 1; i < 9; i++) {
             pawn = new Pawn(i * 10 + 7, "pawn", 1, "White Pawn.png");
-            startingPieces.add(pawn);
+            startingPieces.put(pawn.getPosition(), pawn);
             pawn = new Pawn(i * 10 + 2, "pawn", -1, "Black Pawn.png");
-            startingPieces.add(pawn);
+            startingPieces.put(pawn.getPosition(), pawn);
         }
         rook = new Rook(18, "rook", 1, "White Rook.png", false);
-        startingPieces.add(rook);
+        startingPieces.put(rook.getPosition(), rook);
         rook = new Rook(88, "rook", 1, "White Rook.png", false);
-        startingPieces.add(rook);
+        startingPieces.put(rook.getPosition(), rook);
         knight = new Knight(28, "knight", 1, "White Knight.png");
-        startingPieces.add(knight);
+        startingPieces.put(knight.getPosition(), knight);
         knight = new Knight(78, "knight", 1, "White Knight.png");
-        startingPieces.add(knight);
+        startingPieces.put(knight.getPosition(), knight);
         bishop = new Bishop(38, "bishop", 1, "White Bishop.png");
-        startingPieces.add(bishop);
+        startingPieces.put(bishop.getPosition(), bishop);
         bishop = new Bishop(68, "bishop", 1, "White Bishop.png");
-        startingPieces.add(bishop);
+        startingPieces.put(bishop.getPosition(), bishop);
         queen = new Queen(48, "queen", 1, "White Queen.png");
-        startingPieces.add(queen);
+        startingPieces.put(queen.getPosition(), queen);
         king = new King(58, "king", 1, "White King.png", false);
-        startingPieces.add(king);
+        startingPieces.put(king.getPosition(), king);
 
         rook = new Rook(11, "rook", -1, "Black Rook.png", false);
-        startingPieces.add(rook);
+        startingPieces.put(rook.getPosition(), rook);
         rook = new Rook(81, "rook", -1, "Black Rook.png", false);
-        startingPieces.add(rook);
+        startingPieces.put(rook.getPosition(), rook);
         knight = new Knight(21, "knight", -1, "Black Knight.png");
-        startingPieces.add(knight);
+        startingPieces.put(knight.getPosition(), knight);
         knight = new Knight(71, "knight", -1, "Black Knight.png");
-        startingPieces.add(knight);
+        startingPieces.put(knight.getPosition(), knight);
         bishop = new Bishop(31, "bishop", -1, "Black Bishop.png");
-        startingPieces.add(bishop);
+        startingPieces.put(bishop.getPosition(), bishop);
         bishop = new Bishop(61, "bishop", -1, "Black Bishop.png");
-        startingPieces.add(bishop);
+        startingPieces.put(bishop.getPosition(), bishop);
         queen = new Queen(41, "queen", -1, "Black Queen.png");
-        startingPieces.add(queen);
+        startingPieces.put(queen.getPosition(), queen);
         king = new King(51, "king", -1, "Black King.png", false);
-        startingPieces.add(king);
+        startingPieces.put(king.getPosition(), king);
 
         return startingPieces;
 
@@ -111,7 +108,7 @@ class Chess {
         System.out.println("Execution time: " + (end - start) / 1000000000);
         Queue<MoveResult> levelQueue = new LinkedList<>();
         levelQueue.add(root);
-        chessAI.traverseTree(levelQueue);
+//        chessAI.traverseTree(levelQueue);
         chessAI.findBest(currentBoard, root);
         System.out.println();
         chessAI.traverseTree(levelQueue);
@@ -131,15 +128,15 @@ class Chess {
     }
 
     public static void checkPromotion(Board board) {
-        for (int i = 0; i < board.getPieces().size(); i++) {
-            if (board.getPieces().get(i).getName().compareTo("pawn") == 0) {
-                if (board.getPieces().get(i).getColor() > 0) {
-                    if (board.getPieces().get(i).getPosition() % 10 == 1) {
-                        ((Pawn) (board.getPieces().get(i))).promotePawn(board);
+        for (Piece piece : board.getPieces()) {
+            if (piece.getName().compareTo("pawn") == 0) {
+                if (piece.getColor() > 0) {
+                    if (piece.getPosition() % 10 == 1) {
+                        ((Pawn) (piece)).promotePawn(board);
                     }
-                } else if (board.getPieces().get(i).getColor() < 0) {
-                    if (board.getPieces().get(i).getPosition() % 10 == 8) {
-                        ((Pawn) (board.getPieces().get(i))).promotePawn(board);
+                } else if (piece.getColor() < 0) {
+                    if (piece.getPosition() % 10 == 8) {
+                        ((Pawn) (piece)).promotePawn(board);
                     }
                 }
             }
@@ -149,9 +146,9 @@ class Chess {
     public static void processClick(int position, Board board) {
         boolean foundPiece = false;
         if (selectedSquares.contains(position)) {
-            for (int i = 0; i < board.getPieces().size(); i++) {
-                if (board.getPieces().get(i).getPosition() == selectedPiece.getPosition()) {
-                    selectedPiece = board.getPieces().get(i);
+            for (Piece piece : board.getPieces()) {
+                if (piece.getPosition() == selectedPiece.getPosition()) {
+                    selectedPiece = piece;
                 }
             }
             if (selectedPiece.getName().compareTo("rook") == 0) {
@@ -161,18 +158,18 @@ class Chess {
 
                 if (selectedPiece.getColor() > 0) {
                     if (position == 78) {
-                        Pieces tempPiece = board.getPieceByPos(88);
+                        Piece tempPiece = board.getPiece(88);
                         board.movePiece(tempPiece, 68);
                     } else if (position == 38) {
-                        Pieces tempPiece = board.getPieceByPos(18);
+                        Piece tempPiece = board.getPiece(18);
                         board.movePiece(tempPiece, 48);
                     }
                 } else if (selectedPiece.getColor() < 0) {
                     if (position == 71) {
-                        Pieces tempPiece = board.getPieceByPos(81);
+                        Piece tempPiece = board.getPiece(81);
                         board.movePiece(tempPiece, 61);
                     } else if (position == 31) {
-                        Pieces tempPiece = board.getPieceByPos(11);
+                        Piece tempPiece = board.getPiece(11);
                         board.movePiece(tempPiece, 41);
                     }
                 }
@@ -194,10 +191,10 @@ class Chess {
 
 
         } else {
-            for (int i = 0; i < board.getPieces().size(); i++) {
-                if (position == board.getPieces().get(i).getPosition()
-                        && board.getPieces().get(i).getColor() == board.getTurn()) {
-                    selectedPiece = board.getPieces().get(i);
+            for (Piece piece : board.getPieces()) {
+                if (position == piece.getPosition()
+                        && piece.getColor() == board.getTurn()) {
+                    selectedPiece = piece;
                     displaySelectedMoves(selectedPiece, board);
                     foundPiece = true;
                 }
@@ -210,24 +207,23 @@ class Chess {
     }
 
 
-    public static void displaySelectedMoves(Pieces piece, Board board) {
+    public static void displaySelectedMoves(Piece piece, Board board) {
         selectedSquares.clear();
         selectedSquares.addAll(piece.findLegalMoves(board));
     }
 
 
-    public boolean moveable(Board board, Pieces piece) {
+    public boolean moveable(Board board, Piece piece) {
         int saveCurrentPos = piece.getPosition();
         return false;
     }
 
 
     public static void main(String[] args) throws Exception {
-        ArrayList<Pieces> startingPieces = new ArrayList<Pieces>();
-//        startingPieces.addAll(fillStartingPieces());
-        startingPieces.addAll(setupCustomBoard());
+        HashMap<Integer, Piece> startingPieces = setupCustomBoard();
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);
+        System.out.println(currentBoard.toFEN());
 
 //    for (int i = 0; i < currentBoard.getPieces().size(); i++) {
 //      selectedSquares.addAll(currentBoard.getPiece(i).findPossibleMoves(currentBoard));
