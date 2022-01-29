@@ -100,11 +100,11 @@ class Chess {
 
 
     public static void makeAIMove() {
-        int depth = 2;
         double start = System.nanoTime();
-        Move bestMove = chessAI.generateDepthSearch(currentBoard, 2);
+        Move bestMove = chessAI.generateDepthSearch(currentBoard, 3);
         currentBoard.movePiece(currentBoard.getPiece(bestMove.getOldPosition()), bestMove.getNewPosition());
         double end = System.nanoTime();
+        System.out.println((end - start)/1000000);
     }
 
     public static void checkPromotion(Board board) {
@@ -162,11 +162,9 @@ class Chess {
             if (board.isCheckmate()) {
                 System.exit(0);
             }
-//      System.out.println("changed turn");
             int currentBoardTurn = board.getTurn();
-            makeAIMove();
-//            chessAI.findMove(board);
-            //            makeAIMove();
+//            makeAIMove();
+            chessAI.findMove(board);
             if (currentBoardTurn == board.getTurn()) {
                 board.changeTurn();
             }
@@ -202,8 +200,8 @@ class Chess {
 
 
     public static void main(String[] args) throws Exception {
-//        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
-  //      evaluationData = evaluationReader.getEvaluations();
+        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
+        evaluationData = evaluationReader.getEvaluations();
         HashMap<Integer, Piece> startingPieces = fillStartingPieces();
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);

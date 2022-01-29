@@ -23,8 +23,6 @@ class ChessAI {
                     Piece capturedPiece = board.movePiece(piece, eachMove);
                     String fen = board.toFEN();
                     int evaluation;
-                    System.out.println(fen);
-                    System.out.println(Chess.evaluationData.get(board.getPieces().size()).containsKey(fen));
                     if (Chess.evaluationData.containsKey(board.getPieces().size()) && Chess.evaluationData.get(board.getPieces().size()).containsKey(fen)) {
                         evaluation = Chess.evaluationData.get(board.getPieces().size()).get(fen);
                         Move move = new Move(oldPosition, piece.getPosition(), evaluation);
@@ -36,7 +34,7 @@ class ChessAI {
         }
         Move bestMove;
         if (moves.size() == 0) {
-            bestMove = generateDepthSearch(board, 2);
+            bestMove = generateDepthSearch(board, 3);
         } else if (board.getTurn() > 0) {
             bestMove = max(moves);
         } else {
@@ -87,6 +85,9 @@ class ChessAI {
                     board.changeTurn();
                 }
             }
+        }
+        if (moves.size() == 0) {
+            return new Move(-1, -1, -9999 * color);
         }
         if (color > 0) {
             return max(moves);
