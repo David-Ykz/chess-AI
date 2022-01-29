@@ -1,29 +1,23 @@
 public class Move {
-    private Piece piece;
-    private Piece capturedPiece;
+    private int oldPosition;
     private int newPosition;
-    private int evaluation;
+    private double evaluation;
 
-    public Move(Piece piece, Piece capturedPiece, int newPosition, int evaluation) {
-        this.piece = piece;
-        this.capturedPiece = capturedPiece;
+    public Move(int oldPosition, int newPosition, double evaluation) {
+        this.oldPosition = oldPosition;
         this.newPosition = newPosition;
         this.evaluation = evaluation;
     }
 
-    public Piece getPiece() {
-        return piece;
-    }
-
-    public Piece getCapturedPiece() {
-        return capturedPiece;
+    public int getOldPosition() {
+        return this.oldPosition;
     }
 
     public int getNewPosition() {
-        return newPosition;
+        return this.newPosition;
     }
 
-    public int getEvaluation() {
+    public double getEvaluation() {
         return evaluation;
     }
 }

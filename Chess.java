@@ -102,30 +102,9 @@ class Chess {
     public static void makeAIMove() {
         int depth = 2;
         double start = System.nanoTime();
-        System.out.println("changed turn right before");
-        MoveResult root = new MoveResult(null, null, -1, -1, currentBoard.getTurn(), currentBoard.evaluateBoard());
-        chessAI.generateDepthSearch(currentBoard, root, depth);
+        Move bestMove = chessAI.generateDepthSearch(currentBoard, 2);
+        currentBoard.movePiece(currentBoard.getPiece(bestMove.getOldPosition()), bestMove.getNewPosition());
         double end = System.nanoTime();
-        System.out.println("Execution time: " + (end - start) / 1000000000);
-        Queue<MoveResult> levelQueue = new LinkedList<>();
-        levelQueue.add(root);
-//        chessAI.traverseTree(levelQueue);
-        chessAI.findBest(currentBoard, root);
-        System.out.println();
-        chessAI.traverseTree(levelQueue);
-        ArrayList<MoveResult> bestMoves = new ArrayList<>();
-        System.out.println(root.getEvaluation());
-        for (MoveResult eachMove : root.getChildren()) {
-            System.out.print("Move: " + eachMove.getPiece().getName() + " " +eachMove.getNewPosition() + " Score: " + eachMove.getEvaluation() + " ");
-            if (eachMove.getEvaluation() == root.getEvaluation()) {
-                bestMoves.add(eachMove);
-            }
-        }
-        MoveResult eachMove = bestMoves.get((int)(Math.random() * bestMoves.size()));
-        currentBoard.movePiece(eachMove.getPiece(), eachMove.getNewPosition());
-      //  currentBoard.changeTurn();
-        // TURNS ARE RANDOMLY CHANGING SOMEWHERE PLZ FIX
-
     }
 
     public static void checkPromotion(Board board) {
@@ -185,7 +164,8 @@ class Chess {
             }
 //      System.out.println("changed turn");
             int currentBoardTurn = board.getTurn();
-            chessAI.findMove(board);
+            makeAIMove();
+//            chessAI.findMove(board);
             //            makeAIMove();
             if (currentBoardTurn == board.getTurn()) {
                 board.changeTurn();
@@ -222,8 +202,8 @@ class Chess {
 
 
     public static void main(String[] args) throws Exception {
-        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
-        evaluationData = evaluationReader.getEvaluations();
+//        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
+  //      evaluationData = evaluationReader.getEvaluations();
         HashMap<Integer, Piece> startingPieces = fillStartingPieces();
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);
