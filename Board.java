@@ -102,10 +102,11 @@ class Board {
             }
             fen += "/";
         }
+        fen = fen.substring(0, fen.length() - 1);
         if (this.turn > 0) {
-            fen += "w";
+            fen += " b";
         } else {
-            fen += "b";
+            fen += " w";
         }
         return fen;
     }

@@ -42,9 +42,16 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Application.EvaluationReader">
+  <component name="RunManager" selected="Application.Chess">
     <configuration name="Chess" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Chess" />
+      <module name="chess-AI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DatabaseWriter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DatabaseWriter" />
       <module name="chess-AI" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -59,8 +66,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.EvaluationReader" />
         <item itemvalue="Application.Chess" />
+        <item itemvalue="Application.DatabaseWriter" />
+        <item itemvalue="Application.EvaluationReader" />
       </list>
     </recent_temporary>
   </component>

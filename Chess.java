@@ -8,6 +8,7 @@ class Chess {
     static Board currentBoard;
     static Piece selectedPiece;
     static ChessAI chessAI = new ChessAI();
+    static HashMap<Integer, HashMap<String, Integer>> evaluationData;
 
 
 
@@ -184,7 +185,8 @@ class Chess {
             }
 //      System.out.println("changed turn");
             int currentBoardTurn = board.getTurn();
-            makeAIMove();
+            chessAI.findMove(board);
+            //            makeAIMove();
             if (currentBoardTurn == board.getTurn()) {
                 board.changeTurn();
             }
@@ -220,7 +222,9 @@ class Chess {
 
 
     public static void main(String[] args) throws Exception {
-        HashMap<Integer, Piece> startingPieces = setupCustomBoard();
+        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
+        evaluationData = evaluationReader.getEvaluations();
+        HashMap<Integer, Piece> startingPieces = fillStartingPieces();
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);
         System.out.println(currentBoard.toFEN());

@@ -2,10 +2,95 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-
 class ChessAI {
     ChessAI() {
     }
+
+    // Find all possible moves
+    // Convert to fen
+    // Give evaluations for each move
+    // Pick the best evaluation
+
+
+
+    public void findMove(Board board) {
+        ArrayList<Move> moves = new ArrayList<>();
+        Chess.checkPromotion(board);
+        int color = board.getTurn();
+        for (Piece piece : board.getPieces()) {
+            if (piece.getColor() == color) {
+                for (int eachMove : piece.findLegalMoves(board)) {
+                    int oldPosition = piece.getPosition();
+                    Piece capturedPiece = board.movePiece(piece, eachMove);
+                    String fen = board.toFEN();
+                    int evaluation;
+                    System.out.println(fen);
+                    System.out.println(Chess.evaluationData.get(board.getPieces().size()).containsKey(fen));
+                    if (Chess.evaluationData.containsKey(board.getPieces().size()) && Chess.evaluationData.get(board.getPieces().size()).containsKey(fen)) {
+                        evaluation = Chess.evaluationData.get(board.getPieces().size()).get(fen);
+                        Move move = new Move(piece, capturedPiece, piece.getPosition(), evaluation);
+                        moves.add(move);
+                    }
+                    board.revertMove(piece, capturedPiece, oldPosition);
+                }
+            }
+        }
+
+        if (moves.size() == 0) {
+            MoveResult root = new MoveResult(null, null, -1, -1, board.getTurn(), board.evaluateBoard());
+            generateDepthSearch(board, root, 2);
+            findBest(board, root);
+            ArrayList<MoveResult> bestMoves = new ArrayList<>();
+            for (MoveResult eachMove : root.getChildren()) {
+                System.out.print("Move: " + eachMove.getPiece().getName() + " " +eachMove.getNewPosition() + " Score: " + eachMove.getEvaluation() + " ");
+                if (eachMove.getEvaluation() == root.getEvaluation()) {
+                    bestMoves.add(eachMove);
+                }
+            }
+            MoveResult eachMove = bestMoves.get((int)(Math.random() * bestMoves.size()));
+            board.movePiece(eachMove.getPiece(), eachMove.getNewPosition());
+            return;
+        }
+
+        Move bestMove;
+        if (board.getTurn() > 0) {
+            bestMove = max(moves);
+        } else {
+            bestMove = min(moves);
+        }
+        board.movePiece(bestMove.getPiece(), bestMove.getNewPosition());
+    }
+
+
+
+    public Move max(ArrayList<Move> moves) {
+        Move bestMove = moves.get(0);
+        for (Move move : moves) {
+            if (move.getEvaluation() > bestMove.getEvaluation()) {
+                bestMove = move;
+            }
+        }
+        return bestMove;
+    }
+
+    public Move min(ArrayList<Move> moves) {
+        Move bestMove = moves.get(0);
+        for (Move move : moves) {
+            if (move.getEvaluation() < bestMove.getEvaluation()) {
+                bestMove = move;
+            }
+        }
+        return bestMove;
+    }
+
+
+
+
+
+
+
+
+
 
     public double findMax(ArrayList<MoveResult> moves) {
         MoveResult bestMove = moves.get(0);
@@ -55,7 +140,6 @@ class ChessAI {
                     board.changeTurn();
                     generateDepthSearch(board, moveResult, depth - 1);
                     board.revertMove(piece, capturedPiece, oldPosition);
-
                 }
             }
         }

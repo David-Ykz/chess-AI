@@ -2,6 +2,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
+import java.io.PrintWriter;
+
+
+
+
 public class EvaluationReader {
     private HashMap<Integer, HashMap<String, Integer>> evaluations = new HashMap<>();
 
@@ -9,7 +15,6 @@ public class EvaluationReader {
         try {
             File file = new File(fileName);
             Scanner input = new Scanner(file);
-            input.nextLine();
             input.nextLine();
             while (input.hasNext()) {
                 String[] message = input.nextLine().split(",", -1);
@@ -21,31 +26,49 @@ public class EvaluationReader {
                 } else {
                     evaluation = evaluationToInt(message[1]);
                 }
-
                 putInHashMap(fen, evaluation);
             }
+            input.close();
+            for (Integer num : evaluations.keySet()) {
+                System.out.println("Size: " + num);
+                System.out.println(evaluations.get(num).size());
+            }
+
+
+            File write = new File("size32.txt");
+            PrintWriter output = new PrintWriter(write);
+            HashMap<String, Integer> map = evaluations.get(32);
+            for (String fen : map.keySet()) {
+                output.println(fen);
+            }
+            output.close();
+
+
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     public void putInHashMap(String fen, int evaluation) {
-        if (evaluations.containsKey(numberOfPieces(fen))) {
-            evaluations.get(numberOfPieces(fen)).put(fen, evaluation);
+        int numPieces = numberOfPieces(fen.substring(0, fen.length() - 1));
+        if (evaluations.containsKey(numPieces)) {
+            evaluations.get(numPieces).put(fen, evaluation);
         } else {
-            evaluations.put(numberOfPieces(fen), new HashMap<String, Integer>());
-            evaluations.get(numberOfPieces(fen)).put(fen, evaluation);
+            evaluations.put(numPieces, new HashMap<String, Integer>());
+            evaluations.get(numPieces).put(fen, evaluation);
         }
     }
 
-    public int numberOfPieces(String fen) {
+    public static int numberOfPieces(String fen) {
         int counter = 0;
         String pieceNames = "kqrbnpKQRBNP";
-        for (int i = 0; i < pieceNames.length(); i++) {
+        for (int i = 0; i < fen.length(); i++) {
             if (pieceNames.contains(fen.substring(i, i + 1))) {
                 counter++;
             }
         }
+
         return counter;
     }
 
@@ -57,11 +80,14 @@ public class EvaluationReader {
         }
         return 0;
     }
-    public static void main(String[]args) {
-        EvaluationReader reader = new EvaluationReader("chessData.csv");
-        System.out.println("finished parsing");
+
+    public HashMap<Integer, HashMap<String, Integer>> getEvaluations() {
+        return this.evaluations;
     }
 
+    public static void main(String[]args) {
+        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
 
+    }
 
 }
