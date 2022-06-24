@@ -88,7 +88,25 @@ class Board {
 
 
     public void revertMove(Piece piece, Piece capturedPiece, int oldPosition) {
+
+        if (piece.getName().equals("king")) {
+            if (oldPosition == 51) { // Black king
+                if (piece.getPosition() == 31) {
+                    changePiecePos(pieces.get(41), 11); // Queenside castle
+                } else if (piece.getPosition() == 71) {
+                    changePiecePos(pieces.get(61), 81);
+                }
+            }
+            if (oldPosition == 58) { // White king
+                if (piece.getPosition() == 38) {
+                    changePiecePos(pieces.get(48), 18); // Queenside castle
+                } else if (piece.getPosition() == 78) {
+                    changePiecePos(pieces.get(68), 88);
+                }
+            }
+        }
         changePiecePos(piece, oldPosition);
+
 //        if (piece.getName().equals("rook")) {
  //           ((Rook)piece).notMoved();
   //      } else if (piece.getName().equals("king")) {

@@ -176,23 +176,6 @@ class Chess {
                 ((Rook) selectedPiece).setMoved();
             } else if (selectedPiece.getName().compareTo("king") == 0) {
                 ((King) selectedPiece).setMoved();
-//                if (selectedPiece.getColor() > 0) {
-//                    if (position == 78) {
-//                        Piece tempPiece = board.getPiece(88);
-//                        board.movePiece(tempPiece, 68);
-//                    } else if (position == 38) {
-//                        Piece tempPiece = board.getPiece(18);
-//                        board.movePiece(tempPiece, 48);
-//                    }
-//                } else if (selectedPiece.getColor() < 0) {
-//                    if (position == 71) {
-//                        Piece tempPiece = board.getPiece(81);
-//                        board.movePiece(tempPiece, 61);
-//                    } else if (position == 31) {
-//                        Piece tempPiece = board.getPiece(11);
-//                        board.movePiece(tempPiece, 41);
-//                    }
-//                }
             }
             board.movePiece(selectedPiece, position);
             checkPromotion(board);
