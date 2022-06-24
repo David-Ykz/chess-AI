@@ -49,23 +49,23 @@ class Chess {
         Rook rook;
         Queen queen;
         King king;
-        king = new King(68, "king", 1, "White King.png", false);
+        king = new King(68, 1, false);
         startingPieces.put(king.getPosition(), king);
-        king = new King(51, "king", -1, "Black King.png", false);
+        king = new King(51, -1, false);
         startingPieces.put(king.getPosition(), king);
-        rook = new Rook(21, "rook", -1, "Black Rook.png", true);
+        rook = new Rook(21, -1, true);
         startingPieces.put(rook.getPosition(), rook);
-        rook = new Rook(72, "rook", -1, "Black Rook.png", true);
+        rook = new Rook(72, -1, true);
         startingPieces.put(rook.getPosition(), rook);
-        rook = new Rook(88, "rook", 1, "White Rook.png", false);
+        rook = new Rook(88, 1, false);
         startingPieces.put(rook.getPosition(), rook);
-        rook = new Rook(48, "rook", 1, "White Rook.png", true);
+        rook = new Rook(48, 1, true);
         startingPieces.put(rook.getPosition(), rook);
-        queen = new Queen(13, "queen", -1, "Black Queen.png");
+        queen = new Queen(13, -1);
         startingPieces.put(queen.getPosition(), queen);
-        queen = new Queen(45, "queen", 1, "White Queen.png");
+        queen = new Queen(45, 1);
         startingPieces.put(queen.getPosition(), queen);
-        pawn = new Pawn(77, "pawn", 1, "White Pawn.png");
+        pawn = new Pawn(77, 1);
         startingPieces.put(pawn.getPosition(), pawn);
         return startingPieces;
     }
@@ -79,43 +79,43 @@ class Chess {
         Queen queen;
         King king;
         for (int i = 1; i < 9; i++) {
-            pawn = new Pawn(i * 10 + 7, "pawn", 1, "White Pawn.png");
+            pawn = new Pawn(i * 10 + 7, 1);
             startingPieces.put(pawn.getPosition(), pawn);
-            pawn = new Pawn(i * 10 + 2, "pawn", -1, "Black Pawn.png");
+            pawn = new Pawn(i * 10 + 2, -1);
             startingPieces.put(pawn.getPosition(), pawn);
         }
-        rook = new Rook(18, "rook", 1, "White Rook.png", false);
+        rook = new Rook(18, 1, false);
         startingPieces.put(rook.getPosition(), rook);
-        rook = new Rook(88, "rook", 1, "White Rook.png", false);
+        rook = new Rook(88, 1, false);
         startingPieces.put(rook.getPosition(), rook);
-        knight = new Knight(28, "knight", 1, "White Knight.png");
+        knight = new Knight(28, 1);
         startingPieces.put(knight.getPosition(), knight);
-        knight = new Knight(78, "knight", 1, "White Knight.png");
+        knight = new Knight(78, 1);
         startingPieces.put(knight.getPosition(), knight);
-        bishop = new Bishop(38, "bishop", 1, "White Bishop.png");
+        bishop = new Bishop(38, 1);
         startingPieces.put(bishop.getPosition(), bishop);
-        bishop = new Bishop(68, "bishop", 1, "White Bishop.png");
+        bishop = new Bishop(68, 1);
         startingPieces.put(bishop.getPosition(), bishop);
-        queen = new Queen(48, "queen", 1, "White Queen.png");
+        queen = new Queen(48, 1);
         startingPieces.put(queen.getPosition(), queen);
-        king = new King(58, "king", 1, "White King.png", false);
+        king = new King(58, 1, false);
         startingPieces.put(king.getPosition(), king);
 
-        rook = new Rook(11, "rook", -1, "Black Rook.png", false);
+        rook = new Rook(11, -1, false);
         startingPieces.put(rook.getPosition(), rook);
-        rook = new Rook(81, "rook", -1, "Black Rook.png", false);
+        rook = new Rook(81, -1, false);
         startingPieces.put(rook.getPosition(), rook);
-        knight = new Knight(21, "knight", -1, "Black Knight.png");
+        knight = new Knight(21, -1);
         startingPieces.put(knight.getPosition(), knight);
-        knight = new Knight(71, "knight", -1, "Black Knight.png");
+        knight = new Knight(71, -1);
         startingPieces.put(knight.getPosition(), knight);
-        bishop = new Bishop(31, "bishop", -1, "Black Bishop.png");
+        bishop = new Bishop(31, -1);
         startingPieces.put(bishop.getPosition(), bishop);
-        bishop = new Bishop(61, "bishop", -1, "Black Bishop.png");
+        bishop = new Bishop(61, -1);
         startingPieces.put(bishop.getPosition(), bishop);
-        queen = new Queen(41, "queen", -1, "Black Queen.png");
+        queen = new Queen(41, -1);
         startingPieces.put(queen.getPosition(), queen);
-        king = new King(51, "king", -1, "Black King.png", false);
+        king = new King(51, -1, false);
         startingPieces.put(king.getPosition(), king);
 
         return startingPieces;
@@ -142,7 +142,7 @@ class Chess {
 
     public static void makeAIMove() {
         double start = System.nanoTime();
-        Move bestMove = chessAI.generateDepthSearch(currentBoard, 3);
+        Move bestMove = chessAI.generateDepthSearch(currentBoard, 1);
         currentBoard.movePiece(currentBoard.getPiece(bestMove.getOldPosition()), bestMove.getNewPosition());
         double end = System.nanoTime();
         System.out.println((end - start)/1000000);

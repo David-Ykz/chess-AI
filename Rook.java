@@ -5,8 +5,8 @@ class Rook extends Piece {
   private ArrayList<Integer> verticalSquares = new ArrayList<Integer>();
   private boolean hasMoved;
   
-  Rook(int position, String pieceName, int color, String spriteName, boolean hasMoved) {
-    super(position, pieceName, color, spriteName);
+  Rook(int position, int color, boolean hasMoved) {
+    super(position, "rook", color);
     this.hasMoved = hasMoved;
   }
   

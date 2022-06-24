@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 class Queen extends Piece {
   private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
-  Queen(int position, String pieceName, int color, String spriteName) {
-    super(position, pieceName, color, spriteName);
+  Queen(int position, int color) {
+    super(position, "queen", color);
   }
 
   public double findValue(Board board) {

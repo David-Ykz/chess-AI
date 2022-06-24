@@ -5,8 +5,8 @@ class King extends Piece {
     private int[] kingSquares = {-11, -1, 9, -10, 10, -9, 1, 11};
     private boolean hasMoved;
 
-    King(int position, String pieceName, int color, String spriteName, boolean hasMoved) {
-        super(position, pieceName, color, spriteName);
+    King(int position, int color, boolean hasMoved) {
+        super(position, "king", color);
         this.hasMoved = hasMoved;
     }
 

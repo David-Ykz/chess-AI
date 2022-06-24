@@ -9,17 +9,21 @@ abstract class Piece {
     private String pieceName;
     private int color;
     private BufferedImage sprite;
-    private String spriteName;
 
-    Piece(int position, String pieceName, int color, String spriteName) {
+    Piece(int position, String pieceName, int color) {
 //        String filePrefix = "src/main/java/";
         String filePrefix = "";
-        this.spriteName = spriteName;
         try {
-            sprite = ImageIO.read(new File(filePrefix + spriteName));
+            String prefix;
+            if (color == 1) {
+                prefix = "White ";
+            } else {
+                prefix = "Black ";
+            }
+            sprite = ImageIO.read(new File(filePrefix + prefix + pieceName + ".png"));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(spriteName);
+            System.out.println(pieceName);
         }
         this.position = position;
         this.pieceName = pieceName;

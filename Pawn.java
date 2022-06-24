@@ -3,8 +3,8 @@ import java.util.ArrayList;
 class Pawn extends Piece {
     private ArrayList<Integer> squaresOfInfluence = new ArrayList<Integer>();
 
-    Pawn(int position, String pieceName, int color, String spriteName) {
-        super(position, pieceName, color, spriteName);
+    Pawn(int position, int color) {
+        super(position, "pawn", color);
     }
 
     public double findValue(Board board) {
@@ -23,9 +23,9 @@ class Pawn extends Piece {
         }
         Queen queen = null;
         if (getColor() > 0) {
-            queen = new Queen(getPosition(), "queen", 1, "White Queen.png");
+            queen = new Queen(getPosition(), 1);
         } else if (getColor() < 0) {
-            queen = new Queen(getPosition(), "queen", -1, "Black Queen.png");
+            queen = new Queen(getPosition(), -1);
         }
         board.overridePiece(saveIndex, queen);
 
