@@ -53,7 +53,7 @@ class Chess {
         startingPieces.put(king.getPosition(), king);
         king = new King(51, -1, false);
         startingPieces.put(king.getPosition(), king);
-        rook = new Rook(21, -1, true);
+        rook = new Rook(11, -1, false);
         startingPieces.put(rook.getPosition(), rook);
         rook = new Rook(72, -1, true);
         startingPieces.put(rook.getPosition(), rook);
@@ -142,7 +142,7 @@ class Chess {
 
     public static void makeAIMove() {
         double start = System.nanoTime();
-        Move bestMove = chessAI.generateDepthSearch(currentBoard, 1);
+        Move bestMove = chessAI.generateDepthSearch(currentBoard, 3);
         currentBoard.movePiece(currentBoard.getPiece(bestMove.getOldPosition()), bestMove.getNewPosition());
         double end = System.nanoTime();
         System.out.println((end - start)/1000000);
@@ -176,25 +176,23 @@ class Chess {
                 ((Rook) selectedPiece).setMoved();
             } else if (selectedPiece.getName().compareTo("king") == 0) {
                 ((King) selectedPiece).setMoved();
-
-                if (selectedPiece.getColor() > 0) {
-                    if (position == 78) {
-                        Piece tempPiece = board.getPiece(88);
-                        board.movePiece(tempPiece, 68);
-                    } else if (position == 38) {
-                        Piece tempPiece = board.getPiece(18);
-                        board.movePiece(tempPiece, 48);
-                    }
-                } else if (selectedPiece.getColor() < 0) {
-                    if (position == 71) {
-                        Piece tempPiece = board.getPiece(81);
-                        board.movePiece(tempPiece, 61);
-                    } else if (position == 31) {
-                        Piece tempPiece = board.getPiece(11);
-                        board.movePiece(tempPiece, 41);
-                    }
-                }
-
+//                if (selectedPiece.getColor() > 0) {
+//                    if (position == 78) {
+//                        Piece tempPiece = board.getPiece(88);
+//                        board.movePiece(tempPiece, 68);
+//                    } else if (position == 38) {
+//                        Piece tempPiece = board.getPiece(18);
+//                        board.movePiece(tempPiece, 48);
+//                    }
+//                } else if (selectedPiece.getColor() < 0) {
+//                    if (position == 71) {
+//                        Piece tempPiece = board.getPiece(81);
+//                        board.movePiece(tempPiece, 61);
+//                    } else if (position == 31) {
+//                        Piece tempPiece = board.getPiece(11);
+//                        board.movePiece(tempPiece, 41);
+//                    }
+//                }
             }
             board.movePiece(selectedPiece, position);
             checkPromotion(board);
@@ -205,10 +203,13 @@ class Chess {
             }
             int currentBoardTurn = board.getTurn();
             makeAIMove();
-//            chessAI.findMove(board);
+//            chessAI.findMove(board); // Uses database
+
             if (currentBoardTurn == board.getTurn()) {
                 board.changeTurn();
             }
+//            board.changeTurn();
+
 
 
         } else {

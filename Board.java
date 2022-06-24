@@ -50,6 +50,28 @@ class Board {
         this.pieces.put(newPosition, movedPiece);
     }
     public Piece movePiece(Piece piece, int position) {
+        if (piece.getName().equals("king")) {
+            if (piece.getPosition() == 58) {
+                if (position == 38) { // Queenside castle
+                    castlePiece(piece, position, pieces.get(18), position + 10);
+                    return null;
+                } else if (position == 78) { // Kingside castle
+                    castlePiece(piece, position, pieces.get(88), position - 10);
+                    return null;
+                }
+            } else if (piece.getPosition() == 51) {
+                if (position == 31) { // Queenside castle
+                    System.out.println(pieces.get(11).getName());
+                    castlePiece(piece, position, pieces.get(11), position + 10);
+                    return null;
+                } else if (position == 71) { // Kingside castle
+                    castlePiece(piece, position, pieces.get(81), position - 10);
+                    return null;
+                }
+            }
+        }
+
+
         Piece removedPiece = null;
         if (pieces.containsKey(position) && getPiece(position).getColor() != piece.getColor()) {
              removedPiece = pieces.remove(position);
@@ -57,8 +79,22 @@ class Board {
         changePiecePos(piece, position);
         return removedPiece;
     }
+
+    public void castlePiece(Piece king, int newKingPos, Piece rook, int newRookPos) {
+        changePiecePos(king, newKingPos);
+        changePiecePos(rook, newRookPos);
+    }
+
+
+
     public void revertMove(Piece piece, Piece capturedPiece, int oldPosition) {
         changePiecePos(piece, oldPosition);
+//        if (piece.getName().equals("rook")) {
+ //           ((Rook)piece).notMoved();
+  //      } else if (piece.getName().equals("king")) {
+   //         ((King)piece).notMoved();
+    //    }
+
         if (capturedPiece != null) {
             pieces.put(capturedPiece.getPosition(), capturedPiece);
         }

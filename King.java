@@ -18,6 +18,10 @@ class King extends Piece {
         hasMoved = true;
     }
 
+    public void notMoved() {
+        hasMoved = false;
+    }
+
     public boolean hasMoved() {
         return hasMoved;
     }
@@ -40,7 +44,7 @@ class King extends Piece {
         ArrayList<Integer> possibleMoves = findPossibleMoves(board);
         ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 
-        if (hasMoved == false && getColor() < 0) {
+        if (hasMoved == false && getColor() < 0) { // Black
             // Kingside Castle
             if (board.friendlySquare(81, getColor()) && board.emptySquare(61) && board.emptySquare(71)) {
                 for (int i = 0; i < board.getPieces().size(); i++) {
@@ -67,7 +71,7 @@ class King extends Piece {
                     }
                 }
             }
-        } else if (hasMoved == false && getColor() > 0) {
+        } else if (hasMoved == false && getColor() > 0) { // White
             // Kingside Castle
             if (board.friendlySquare(88, getColor()) && board.emptySquare(68) && board.emptySquare(78)) {
                 for (int i = 0; i < board.getPieces().size(); i++) {
