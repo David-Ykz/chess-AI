@@ -10,7 +10,36 @@ class Chess {
     static ChessAI chessAI = new ChessAI();
     static HashMap<Integer, HashMap<String, Integer>> evaluationData;
 
+    public static HashMap<Integer, Piece> fenToBoard(String fen) {
+        HashMap<Integer, Piece> startingPieces = new HashMap<>();
+        Pawn pawn;
+        Knight knight;
+        Bishop bishop;
+        Rook rook;
+        Queen queen;
+        King king;
+        for (int i = 0; i < 8; i++) {
+            String row;
+            if (i < 7) {
+                row = fen.substring(0, fen.indexOf('/') - 1);
+                System.out.println(row);
+                fen = fen.substring(fen.indexOf('/') + 1);
+            } else {
+                row = fen.substring(0, fen.indexOf(' ') - 1);
+                System.out.println(row);
+                fen = fen.substring(fen.indexOf(' ') + 1);
+            }
 
+            for (int j = 0; j < row.length(); j++) {
+                if (row.substring(j, j + 1).compareTo("p") == 0) {
+//                    pawn = new Pawn(10 * j)
+                }
+            }
+
+        }
+        return startingPieces;
+
+    }
 
     public static HashMap<Integer, Piece> setupCustomBoard() {
         HashMap<Integer, Piece> startingPieces = new HashMap<>();
@@ -20,12 +49,24 @@ class Chess {
         Rook rook;
         Queen queen;
         King king;
-        king = new King(58, "king", 1, "White King.png", false);
+        king = new King(68, "king", 1, "White King.png", false);
         startingPieces.put(king.getPosition(), king);
         king = new King(51, "king", -1, "Black King.png", false);
         startingPieces.put(king.getPosition(), king);
-        knight = new Knight(66, "knight", -1, "Black Knight.png");
-        startingPieces.put(knight.getPosition(), knight);
+        rook = new Rook(21, "rook", -1, "Black Rook.png", true);
+        startingPieces.put(rook.getPosition(), rook);
+        rook = new Rook(72, "rook", -1, "Black Rook.png", true);
+        startingPieces.put(rook.getPosition(), rook);
+        rook = new Rook(88, "rook", 1, "White Rook.png", false);
+        startingPieces.put(rook.getPosition(), rook);
+        rook = new Rook(48, "rook", 1, "White Rook.png", true);
+        startingPieces.put(rook.getPosition(), rook);
+        queen = new Queen(13, "queen", -1, "Black Queen.png");
+        startingPieces.put(queen.getPosition(), queen);
+        queen = new Queen(45, "queen", 1, "White Queen.png");
+        startingPieces.put(queen.getPosition(), queen);
+        pawn = new Pawn(77, "pawn", 1, "White Pawn.png");
+        startingPieces.put(pawn.getPosition(), pawn);
         return startingPieces;
     }
 
@@ -163,8 +204,8 @@ class Chess {
                 System.exit(0);
             }
             int currentBoardTurn = board.getTurn();
-//            makeAIMove();
-            chessAI.findMove(board);
+            makeAIMove();
+//            chessAI.findMove(board);
             if (currentBoardTurn == board.getTurn()) {
                 board.changeTurn();
             }
@@ -200,9 +241,10 @@ class Chess {
 
 
     public static void main(String[] args) throws Exception {
-        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
-        evaluationData = evaluationReader.getEvaluations();
-        HashMap<Integer, Piece> startingPieces = fillStartingPieces();
+//        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
+  //      evaluationData = evaluationReader.getEvaluations();
+//        HashMap<Integer, Piece> startingPieces = fillStartingPieces();
+        HashMap<Integer, Piece> startingPieces = setupCustomBoard();
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);
         System.out.println(currentBoard.toFEN());

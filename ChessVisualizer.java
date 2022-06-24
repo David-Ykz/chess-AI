@@ -23,7 +23,7 @@ public class ChessVisualizer extends JFrame{
       public void paintComponent(Graphics g) {
         super.paintComponent(g);
         board.drawBoard(g, GRIDSIZE);
-        board.drawEvaluation(g, GRIDSIZE);
+//        board.drawEvaluation(g, GRIDSIZE);
         this.repaint();
       }
       
