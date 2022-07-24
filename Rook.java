@@ -36,14 +36,14 @@ class Rook extends Piece {
     return squaresOfInfluence;
   }
   private void findVerticalSquare(int position, Board board, int direction) {
-    if (direction > 0 && position%10 < 8) {
+    if (direction > 0 && position % 10 < 8) {
       if (board.emptySquare(position + direction) == true) {
         squaresOfInfluence.add(position + direction);
         findVerticalSquare(position + direction, board, direction);
       } else {
         squaresOfInfluence.add(position + direction);
       }
-    } else if (direction < 0 && position%10 > 1) {
+    } else if (direction < 0 && position % 10 > 1) {
       if (board.emptySquare(position + direction) == true) {
         squaresOfInfluence.add(position + direction);
         findVerticalSquare(position + direction, board, direction);

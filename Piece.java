@@ -46,7 +46,7 @@ abstract class Piece {
     abstract ArrayList<Integer> findPossibleMoves(Board board);
     public ArrayList<Integer> findAllMoves(Board board, int color) {
         ArrayList<Integer> allMoves = new ArrayList<>();
-        for (Piece piece :board.getPieces()) {
+        for (Piece piece : board.getPieces()) {
             if (color > 0 && piece.getColor() < 0) {
                 allMoves.addAll(piece.findPossibleMoves(board));
             } else if (color < 0 && piece.getColor() > 0) {

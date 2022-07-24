@@ -61,7 +61,6 @@ class Board {
                 }
             } else if (piece.getPosition() == 51) {
                 if (position == 31) { // Queenside castle
-                    System.out.println(pieces.get(11).getName());
                     castlePiece(piece, position, pieces.get(11), position + 10);
                     return null;
                 } else if (position == 71) { // Kingside castle

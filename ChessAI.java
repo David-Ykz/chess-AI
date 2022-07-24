@@ -66,6 +66,7 @@ class ChessAI {
 
 
     public Move generateDepthSearch(Board board, int depth) {
+        double currentEval = board.evaluateBoard();
         ArrayList<Move> moves = new ArrayList<>();
         Chess.checkPromotion(board);
         int color = board.getTurn();
@@ -77,6 +78,7 @@ class ChessAI {
                     board.changeTurn();
                     if (depth == 0) {
                         moves.add(new Move(oldPosition, piece.getPosition(), board.evaluateBoard()));
+//                    } else if (board.evaluateBoard() > color * currentEval) {
                     } else {
                         Move bestMove = generateDepthSearch(board, depth - 1);
                         moves.add(new Move(oldPosition, piece.getPosition(), bestMove.getEvaluation()));

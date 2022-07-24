@@ -145,7 +145,7 @@ class Chess {
         Move bestMove = chessAI.generateDepthSearch(currentBoard, 3);
         currentBoard.movePiece(currentBoard.getPiece(bestMove.getOldPosition()), bestMove.getNewPosition());
         double end = System.nanoTime();
-        System.out.println((end - start)/1000000);
+        System.out.println((end - start)/1000000000);
     }
 
     public static void checkPromotion(Board board) {
@@ -227,8 +227,8 @@ class Chess {
     public static void main(String[] args) throws Exception {
 //        EvaluationReader evaluationReader = new EvaluationReader("chessData.csv");
   //      evaluationData = evaluationReader.getEvaluations();
-//        HashMap<Integer, Piece> startingPieces = fillStartingPieces();
-        HashMap<Integer, Piece> startingPieces = setupCustomBoard();
+        HashMap<Integer, Piece> startingPieces = fillStartingPieces();
+//        HashMap<Integer, Piece> startingPieces = setupCustomBoard();
         currentBoard = new Board(1, startingPieces);
         ChessVisualizer visualizer = new ChessVisualizer(currentBoard);
         System.out.println(currentBoard.toFEN());
